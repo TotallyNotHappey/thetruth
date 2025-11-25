@@ -7,7 +7,7 @@
     <style>
         @font-face {
             font-family: 'Minecraft';
-            src: url('https://cdn.jsdelivr.net/gh/microsoft/minecraft-ui@main/Font/MinecraftRegular.otf') format('opentype');
+            src: url('minecraft.ttf') format('truetype');
         }
         
         * {
@@ -122,8 +122,7 @@
     
     <div class="video-container" id="videoContainer">
         <video id="backgroundVideo" loop muted>
-            <!-- Using a placeholder video, replace with your own -->
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" type="video/mp4">
+            <source src="static.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -133,9 +132,8 @@
     </div>
     
     <div class="audio-container">
-        <!-- Using placeholder sounds, replace with your own -->
-        <audio id="doorSound" src="https://assets.mixkit.co/sfx/preview/mixkit-creaky-door-opening-2584.mp3"></audio>
-        <audio id="backgroundMusic" src="https://assets.mixkit.co/music/preview/mixkit-happy-day-583.mp3" loop></audio>
+        <audio id="doorSound" src="door.mp3"></audio>
+        <audio id="backgroundMusic" src="music.mp3" loop></audio>
     </div>
 
     <script>
