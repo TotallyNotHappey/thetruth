@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Door Experience</title>
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://cdn.jsdelivr.net/gh/microsoft/minecraft-ui@main/Font/MinecraftRegular.otf') format('opentype');
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #000;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: background-color 5s ease;
+            font-family: Arial, sans-serif;
+        }
+        
+        .door-container {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .door {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #8B4513;
+            border: 10px solid #5D2906;
+            border-radius: 5px;
+            transform-origin: left;
+            transition: transform 1s ease;
+            box-shadow: 0 0 20px rgba(139, 69, 19, 0.7);
+        }
+        
+        .door-knob {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            box-shadow: 0 0 5px #FFD700;
+        }
+        
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 5s ease;
+            z-index: -1;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .text-container {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            transition: all 5s ease;
+            z-index: 10;
+        }
+        
+        .text-container h1 {
+            font-family: 'Minecraft', monospace;
+            font-size: 3rem;
+            color: white;
+            text-shadow: 
+                3px 3px 0 #000,
+                -3px -3px 0 #000,
+                3px -3px 0 #000,
+                -3px 3px 0 #000;
+            letter-spacing: 2px;
+        }
+        
+        .audio-container {
+            display: none;
+        }
+        
+        .click-area {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="door-container">
+        <div class="click-area" id="clickArea"></div>
+        <div class="door" id="door">
+            <div class="door-knob"></div>
+        </div>
+    </div>
+    
+    <div class="video-container" id="videoContainer">
+        <video id="backgroundVideo" loop muted>
+            <!-- Using a placeholder video, replace with your own -->
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="text-container" id="textContainer">
+        <h1>Welcome to a New World</h1>
+    </div>
+    
+    <div class="audio-container">
+        <!-- Using placeholder sounds, replace with your own -->
+        <audio id="doorSound" src="https://assets.mixkit.co/sfx/preview/mixkit-creaky-door-opening-2584.mp3"></audio>
+        <audio id="backgroundMusic" src="https://assets.mixkit.co/music/preview/mixkit-happy-day-583.mp3" loop></audio>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const door = document.getElementById('door');
+            const clickArea = document.getElementById('clickArea');
+            const doorSound = document.getElementById('doorSound');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const videoContainer = document.getElementById('videoContainer');
+            const textContainer = document.getElementById('textContainer');
+            const backgroundVideo = document.getElementById('backgroundVideo');
+            const body = document.body;
+            
+            let doorOpened = false;
+            
+            // Position text at top initially
+            textContainer.style.top = '10%';
+            
+            clickArea.addEventListener('click', function() {
+                if (doorOpened) return;
+                doorOpened = true;
+                
+                // Open the door
+                door.style.transform = 'rotateY(-80deg)';
+                
+                // Play door sound
+                doorSound.play();
+                
+                // After 1 second, fade out the door
+                setTimeout(function() {
+                    door.style.opacity = '0';
+                    door.style.transition = 'opacity 2s ease';
+                    
+                    // After door fades out, start background transition
+                    setTimeout(function() {
+                        // Change background to white
+                        body.style.backgroundColor = '#fff';
+                        
+                        // Move text back to center
+                        textContainer.style.top = '50%';
+                        
+                        // Fade in video and music
+                        videoContainer.style.opacity = '1';
+                        backgroundVideo.play();
+                        backgroundMusic.volume = 0;
+                        backgroundMusic.play();
+                        
+                        // Fade in music
+                        let fadeInAudio = setInterval(function() {
+                            if (backgroundMusic.volume < 1) {
+                                backgroundMusic.volume += 0.05;
+                            } else {
+                                clearInterval(fadeInAudio);
+                            }
+                        }, 200);
+                        
+                        // After video fades in, show text
+                        setTimeout(function() {
+                            textContainer.style.opacity = '1';
+                        }, 5000);
+                        
+                    }, 2000); // Wait for door to fade out
+                    
+                }, 1000); // Wait 1 second after door opens
+            });
+        });
+    </script>
+</body>
+</html>
