@@ -83,7 +83,7 @@
             transform: translate(-50%, -50%);
             text-align: center;
             opacity: 0;
-            transition: all 5s ease;
+            transition: all 2.5s ease;
             z-index: 10;
         }
         
@@ -128,7 +128,7 @@
     </div>
     
     <div class="text-container" id="textContainer">
-        <h1>i saw the truth.</h1>
+        <h1 id="textElement">i saw the truth.</h1>
     </div>
     
     <div class="audio-container">
@@ -144,10 +144,77 @@
             const backgroundMusic = document.getElementById('backgroundMusic');
             const videoContainer = document.getElementById('videoContainer');
             const textContainer = document.getElementById('textContainer');
+            const textElement = document.getElementById('textElement');
             const backgroundVideo = document.getElementById('backgroundVideo');
             const body = document.body;
             
             let doorOpened = false;
+            
+            // Text dialogue sequence
+            const textSequence = [
+                "i saw it happen.",
+                "it was so sudden.",
+                "everything.",
+                "it happened so quick.",
+                "she kidnapped her."
+                "kept her away from us."
+                "..."
+                "why..."
+                "WHY. WHY. WHY."
+                "WHY WHY WHY WHY WHY WHY WHY WHY WHY WHY!?"
+                "..."
+                "maybe."
+                "its my fault."
+                "maybe that lead to..."
+                "whatever the fuck this is."
+                "..."
+                "whatever..."
+                "dad..."
+                "im sorry..."
+                "im sorry she wanted to do this."
+                "im sorry she almost stabbed you with a knife."
+                "im sorry she threw everything out."
+                "...sorry"
+                "██████..."
+                "i hope one day in court we'll get her back..."
+                "eventually."
+                "when i was a little baby"
+                "somewhere when I was 5."
+                "I wanted to know everything"
+                "I wanted nothing more than to become smart."
+                "but..."
+                "I guess..."
+                "for the peace of my mind."
+                "for the innocence I still hold in my heart..."
+                "for my inner child..."
+                "some things must be left unknown."
+            ];
+            
+            let currentTextIndex = 0;
+            
+            // Function to show next text in sequence
+            function showNextText() {
+                if (currentTextIndex < textSequence.length) {
+                    // Update text content
+                    textElement.textContent = textSequence[currentTextIndex];
+                    
+                    // Fade in
+                    textContainer.style.opacity = '1';
+                    
+                    // After 2.5 seconds, fade out and show next text
+                    setTimeout(function() {
+                        textContainer.style.opacity = '0';
+                        
+                        // Wait for fade out to complete, then show next text
+                        setTimeout(function() {
+                            currentTextIndex++;
+                            if (currentTextIndex < textSequence.length) {
+                                showNextText();
+                            }
+                        }, 2500); // Wait for fade out to complete
+                    }, 2500); // Show text for 2.5 seconds
+                }
+            }
             
             // Position text at top initially
             textContainer.style.top = '10%';
@@ -190,9 +257,9 @@
                             }
                         }, 200);
                         
-                        // After video fades in, show text
+                        // After video fades in, start text sequence
                         setTimeout(function() {
-                            textContainer.style.opacity = '1';
+                            showNextText();
                         }, 5000);
                         
                     }, 2000); // Wait for door to fade out
